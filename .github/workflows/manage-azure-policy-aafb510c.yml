@@ -1,0 +1,32 @@
+name: manage-azure-policy-aafb510c
+on:
+  workflow_dispatch:
+    inputs:
+      remarks:
+        description: 'Reason for triggering the workflow run'
+        required: false
+        default: 'Updating Azure Policies'
+
+
+## Uncomment the following if you wish to automatically trigger workflow run with every commit
+#
+#  push:
+#    paths:
+#      - 'policies/The_Log_Analytics_extension_should_be_installed_on_Virtual_Machine_Scale_Sets_efbde977-ba53-4479-b8e9-10b957924fbf/**'
+#      - .github/workflows/manage-azure-policy-aafb510c.yml
+jobs:
+  apply-azure-policy:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+    - name: Login to Azure
+      uses: azure/login@v1
+      with:
+        creds: ${{secrets.AZURE_CREDENTIALS_aafb510c}}
+        allow-no-subscriptions: true
+    - name: Create or Update Azure Policies
+      uses: azure/manage-azure-policy@v0
+      with:
+        paths: |
+          policies/The_Log_Analytics_extension_should_be_installed_on_Virtual_Machine_Scale_Sets_efbde977-ba53-4479-b8e9-10b957924fbf/**
