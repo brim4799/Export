@@ -1,0 +1,32 @@
+name: manage-azure-policy-24c4eb7b
+on:
+  workflow_dispatch:
+    inputs:
+      remarks:
+        description: 'Reason for triggering the workflow run'
+        required: false
+        default: 'Updating Azure Policies'
+
+
+## Uncomment the following if you wish to automatically trigger workflow run with every commit
+#
+#  push:
+#    paths:
+#      - 'policies/Storage_accounts_should_restrict_network_access_using_virtual_network_rules_2a1a9cdf-e04d-429a-8416-3bfb72a1b26f/**'
+#      - .github/workflows/manage-azure-policy-24c4eb7b.yml
+jobs:
+  apply-azure-policy:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+    - name: Login to Azure
+      uses: azure/login@v1
+      with:
+        creds: ${{secrets.AZURE_CREDENTIALS_24c4eb7b}}
+        allow-no-subscriptions: true
+    - name: Create or Update Azure Policies
+      uses: azure/manage-azure-policy@v0
+      with:
+        paths: |
+          policies/Storage_accounts_should_restrict_network_access_using_virtual_network_rules_2a1a9cdf-e04d-429a-8416-3bfb72a1b26f/**
