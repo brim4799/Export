@@ -1,0 +1,32 @@
+name: manage-azure-policy-c6e24b4f
+on:
+  workflow_dispatch:
+    inputs:
+      remarks:
+        description: 'Reason for triggering the workflow run'
+        required: false
+        default: 'Updating Azure Policies'
+
+
+## Uncomment the following if you wish to automatically trigger workflow run with every commit
+#
+#  push:
+#    paths:
+#      - 'policies/Resource_logs_in_Key_Vault_should_be_enabled_cf820ca0-f99e-4f3e-84fb-66e913812d21/**'
+#      - .github/workflows/manage-azure-policy-c6e24b4f.yml
+jobs:
+  apply-azure-policy:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+    - name: Login to Azure
+      uses: azure/login@v1
+      with:
+        creds: ${{secrets.AZURE_CREDENTIALS_c6e24b4f}}
+        allow-no-subscriptions: true
+    - name: Create or Update Azure Policies
+      uses: azure/manage-azure-policy@v0
+      with:
+        paths: |
+          policies/Resource_logs_in_Key_Vault_should_be_enabled_cf820ca0-f99e-4f3e-84fb-66e913812d21/**
