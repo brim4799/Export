@@ -1,0 +1,32 @@
+name: manage-azure-policy-ac292bda
+on:
+  workflow_dispatch:
+    inputs:
+      remarks:
+        description: 'Reason for triggering the workflow run'
+        required: false
+        default: 'Updating Azure Policies'
+
+
+## Uncomment the following if you wish to automatically trigger workflow run with every commit
+#
+#  push:
+#    paths:
+#      - 'policies/Non-internet-facing_virtual_machines_should_be_protected_with_network_security_groups_bb91dfba-c30d-4263-9add-9c2384e659a6/**'
+#      - .github/workflows/manage-azure-policy-ac292bda.yml
+jobs:
+  apply-azure-policy:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+    - name: Login to Azure
+      uses: azure/login@v1
+      with:
+        creds: ${{secrets.AZURE_CREDENTIALS_ac292bda}}
+        allow-no-subscriptions: true
+    - name: Create or Update Azure Policies
+      uses: azure/manage-azure-policy@v0
+      with:
+        paths: |
+          policies/Non-internet-facing_virtual_machines_should_be_protected_with_network_security_groups_bb91dfba-c30d-4263-9add-9c2384e659a6/**
